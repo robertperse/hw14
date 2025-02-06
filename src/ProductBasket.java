@@ -29,12 +29,15 @@ public class ProductBasket {
             System.out.println("В корзине пусто.");
             return;
         }
+        int totalPrice = 0;
+        System.out.println("Содержимое корзины:");
         for (Product product : products) {
             if (product != null) {
                 System.out.println(product);
+                totalPrice += product.getPrice();
             }
         }
-        System.out.println("Итого: " + getTotalPrice());
+        System.out.println("Итого: " + totalPrice);
     }
 
     public boolean containsProduct(String name) {
