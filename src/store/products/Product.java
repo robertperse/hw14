@@ -1,3 +1,5 @@
+package store.products;
+
 public abstract class Product {
     protected String name;
 

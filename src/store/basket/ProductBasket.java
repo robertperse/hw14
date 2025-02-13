@@ -1,18 +1,30 @@
-import java.util.List;
-import java.util.ArrayList;
+package store.basket;
+
+import store.products.Product;
 
 public class ProductBasket {
-    private List<Product> products = new ArrayList<>();
+    private Product[] products;
+    private int count;
+
+    public ProductBasket(int capacity) {
+        products = new Product[capacity];
+        count = 0;
+    }
 
     public void addProduct(Product product) {
-        products.add(product);
+        if (count < products.length) {
+            products[count++] = product;
+        } else {
+            System.out.println("Корзина переполнена!");
+        }
     }
 
     public void printReceipt() {
         double totalCost = 0;
         int specialCount = 0;
 
-        for (Product product : products) {
+        for (int i = 0; i < count; i++) {
+            Product product = products[i];
             System.out.println(product.toString());
             totalCost += product.getPrice();
             if (product.isSpecial()) {

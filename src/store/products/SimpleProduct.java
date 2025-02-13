@@ -1,3 +1,5 @@
+package store.products;
+
 public class SimpleProduct extends Product {
     private double price;
 

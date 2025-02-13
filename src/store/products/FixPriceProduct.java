@@ -1,5 +1,7 @@
+package store.products;
+
 public class FixPriceProduct extends Product {
-    private static final double FIXED_PRICE = 100.0; // Фиксированная цена
+    private static final double FIXED_PRICE = 100.0;
 
     public FixPriceProduct(String name) {
         super(name);
