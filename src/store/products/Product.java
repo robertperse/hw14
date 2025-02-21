@@ -1,6 +1,8 @@
 package store.products;
 
-public abstract class Product {
+import store.search.Searchable;
+
+public abstract class Product implements Searchable {
     protected String name;
 
     public Product(String name) {
@@ -12,5 +14,17 @@ public abstract class Product {
     public abstract boolean isSpecial();
 
     @Override
-    public abstract String toString();
+    public String getSearchTerm() {
+        return name;
+    }
+
+    @Override
+    public String getContentType() {
+        return "PRODUCT";
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }
