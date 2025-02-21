@@ -3,36 +3,48 @@ package store.basket;
 import store.products.Product;
 
 public class ProductBasket {
-    private Product[] products;
-    private int count;
+    private final Product[] products;
+    private int count = 0;
 
-    public ProductBasket(int capacity) {
-        products = new Product[capacity];
-        count = 0;
+    public ProductBasket(int size) {
+        this.products = new Product[size];
     }
 
     public void addProduct(Product product) {
         if (count < products.length) {
             products[count++] = product;
         } else {
-            System.out.println("Корзина переполнена!");
+            System.out.println("Корзина переполнена! Нельзя добавить больше товаров.");
         }
     }
 
-    public void printReceipt() {
-        double totalCost = 0;
-        int specialCount = 0;
+    public double getTotalPrice() {
+        double total = 0;
+        for (Product product : products) {
+            if (product != null) {
+                total += product.getPrice();
+            }
+        }
+        return total;
+    }
 
-        for (int i = 0; i < count; i++) {
-            Product product = products[i];
-            System.out.println(product.toString());
-            totalCost += product.getPrice();
-            if (product.isSpecial()) {
+    public int getSpecialProductCount() {
+        int specialCount = 0;
+        for (Product product : products) {
+            if (product != null && product.isSpecial()) {
                 specialCount++;
             }
         }
+        return specialCount;
+    }
 
-        System.out.println("Итого: " + totalCost);
-        System.out.println("Специальных товаров: " + specialCount);
+    public void printReceipt() {
+        for (Product product : products) {
+            if (product != null) {
+                System.out.println(product);
+            }
+        }
+        System.out.println("Итого: " + getTotalPrice());
+        System.out.println("Специальных товаров: " + getSpecialProductCount());
     }
 }
