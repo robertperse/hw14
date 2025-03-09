@@ -1,29 +1,21 @@
 package store.basket;
 
 import store.products.Product;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class ProductBasket {
-    private final Product[] products;
-    private int count = 0;
-
-    public ProductBasket(int size) {
-        this.products = new Product[size];
-    }
+    private final List<Product> products = new ArrayList<>();
 
     public void addProduct(Product product) {
-        if (count < products.length) {
-            products[count++] = product;
-        } else {
-            System.out.println("Корзина переполнена! Нельзя добавить больше товаров.");
-        }
+        products.add(product);
     }
 
     public double getTotalPrice() {
         double total = 0;
         for (Product product : products) {
-            if (product != null) {
-                total += product.getPrice();
-            }
+            total += product.getPrice();
         }
         return total;
     }
@@ -31,18 +23,30 @@ public class ProductBasket {
     public int getSpecialProductCount() {
         int specialCount = 0;
         for (Product product : products) {
-            if (product != null && product.isSpecial()) {
+            if (product.isSpecial()) {
                 specialCount++;
             }
         }
         return specialCount;
     }
 
+    public List<Product> removeProductByName(String name) {
+        List<Product> removedProducts = new ArrayList<>();
+        Iterator<Product> iterator = products.iterator();
+
+        while (iterator.hasNext()) {
+            Product product = iterator.next();
+            if (product.getName().equalsIgnoreCase(name)) {
+                removedProducts.add(product);
+                iterator.remove();
+            }
+        }
+        return removedProducts;
+    }
+
     public void printReceipt() {
         for (Product product : products) {
-            if (product != null) {
-                System.out.println(product);
-            }
+            System.out.println(product);
         }
         System.out.println("Итого: " + getTotalPrice());
         System.out.println("Специальных товаров: " + getSpecialProductCount());
