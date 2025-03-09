@@ -1,34 +1,23 @@
 package store.search;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchEngine {
-    private final Searchable[] searchables;
-    private int count = 0;
-
-    public SearchEngine(int size) {
-        this.searchables = new Searchable[size];
-    }
+    private final List<Searchable> searchables = new ArrayList<>();
 
     public void add(Searchable searchable) {
-        if (count < searchables.length) {
-            searchables[count++] = searchable;
-        } else {
-            System.out.println("Нельзя добавить больше элементов в поисковый движок.");
-        }
+        searchables.add(searchable);
     }
 
-    public Searchable[] search(String query) {
-        Searchable[] results = new Searchable[5];
-        int found = 0;
-
+    public List<Searchable> search(String query) {
+        List<Searchable> results = new ArrayList<>();
         for (Searchable item : searchables) {
-            if (item != null && item.getSearchTerm().toLowerCase().contains(query.toLowerCase())) {
-                results[found++] = item;
-                if (found == 5) break;
+            if (item.getSearchTerm().toLowerCase().contains(query.toLowerCase())) {
+                results.add(item);
             }
         }
-        return Arrays.copyOf(results, found);
+        return results;
     }
 
     public Searchable findBestMatch(String search) throws BestResultNotFound {
@@ -36,18 +25,16 @@ public class SearchEngine {
         int maxOccurrences = 0;
 
         for (Searchable item : searchables) {
-            if (item != null) {
-                String searchTerm = item.getSearchTerm().toLowerCase();
-                int count = 0, index = 0;
-                while ((index = searchTerm.indexOf(search.toLowerCase(), index)) != -1) {
-                    count++;
-                    index += search.length();
-                }
+            String searchTerm = item.getSearchTerm().toLowerCase();
+            int count = 0, index = 0;
+            while ((index = searchTerm.indexOf(search.toLowerCase(), index)) != -1) {
+                count++;
+                index += search.length();
+            }
 
-                if (count > maxOccurrences) {
-                    maxOccurrences = count;
-                    bestMatch = item;
-                }
+            if (count > maxOccurrences) {
+                maxOccurrences = count;
+                bestMatch = item;
             }
         }
 
