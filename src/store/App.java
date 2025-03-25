@@ -59,14 +59,14 @@ public class App {
 
             try {
                 Searchable bestMatch = searchEngine.findBestMatch("молоко");
-                System.out.println("\nЛучший результат: " + bestMatch);
+                System.out.println("Лучший результат: " + bestMatch);
             } catch (BestResultNotFound e) {
                 System.out.println(e.getMessage());
             }
 
             try {
                 Searchable bestMatch = searchEngine.findBestMatch("шоколад");
-                System.out.println("\nЛучший результат: " + bestMatch);
+                System.out.println("Лучший результат: " + bestMatch);
             } catch (BestResultNotFound e) {
                 System.out.println(e.getMessage());
             }

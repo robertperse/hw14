@@ -1,6 +1,7 @@
 package store.products;
 
 import store.search.Searchable;
+
 import java.util.Objects;
 
 public abstract class Product implements Searchable {

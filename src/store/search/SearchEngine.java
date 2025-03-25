@@ -1,41 +1,24 @@
 package store.search;
 
 import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class SearchEngine {
-    private final Set<Searchable> searchables = new TreeSet<>(new Comparator<Searchable>() {
-        @Override
-        public int compare(Searchable o1, Searchable o2) {
-            int lengthComparison = Integer.compare(o2.getName().length(), o1.getName().length());
-            if (lengthComparison == 0) {
-                return o1.getName().compareTo(o2.getName());
-            }
-            return lengthComparison;
-        }
-    });
+    private final Set<Searchable> searchables = new HashSet<>();
 
     public void add(Searchable searchable) {
         searchables.add(searchable);
     }
 
     public Set<Searchable> search(String query) {
-        Set<Searchable> results = new TreeSet<>(new Comparator<Searchable>() {
-            @Override
-            public int compare(Searchable o1, Searchable o2) {
-                int lengthComparison = Integer.compare(o2.getName().length(), o1.getName().length());
-                if (lengthComparison == 0) {
-                    return o1.getName().compareTo(o2.getName());
-                }
-                return lengthComparison;
-            }
-        });
-        for (Searchable item : searchables) {
-            if (item.getSearchTerm().toLowerCase().contains(query.toLowerCase())) {
-                results.add(item);
-            }
-        }
-        return results;
+        return searchables.stream()
+                .filter(item -> item.getSearchTerm().toLowerCase().contains(query.toLowerCase()))
+                .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator
+                        .comparingInt((Searchable o) -> -o.getName().length()) // Отрицательное число для сортировки по убыванию
+                        .thenComparing(Searchable::getName))));
     }
+
 
     public Searchable findBestMatch(String search) throws BestResultNotFound {
         Searchable bestMatch = null;

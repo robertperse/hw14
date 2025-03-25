@@ -1,5 +1,9 @@
 package store.products;
 
+import store.search.Searchable;
+
+import java.util.Objects;
+
 public class DiscountProduct extends Product {
     private final double basePrice;
     private final int discountPercent;
@@ -29,5 +33,18 @@ public class DiscountProduct extends Product {
     @Override
     public String toString() {
         return "Скидочный продукт: " + super.toString() + " (скидка: " + discountPercent + "%)";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DiscountProduct that = (DiscountProduct) o;
+        return Objects.equals(getName(), that.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName());
     }
 }
