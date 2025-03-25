@@ -3,17 +3,35 @@ package store.search;
 import java.util.*;
 
 public class SearchEngine {
-    private final List<Searchable> searchables = new ArrayList<>();
+    private final Set<Searchable> searchables = new TreeSet<>(new Comparator<Searchable>() {
+        @Override
+        public int compare(Searchable o1, Searchable o2) {
+            int lengthComparison = Integer.compare(o2.getName().length(), o1.getName().length());
+            if (lengthComparison == 0) {
+                return o1.getName().compareTo(o2.getName());
+            }
+            return lengthComparison;
+        }
+    });
 
     public void add(Searchable searchable) {
         searchables.add(searchable);
     }
 
-    public Map<String, Searchable> search(String query) {
-        Map<String, Searchable> results = new TreeMap<>();
+    public Set<Searchable> search(String query) {
+        Set<Searchable> results = new TreeSet<>(new Comparator<Searchable>() {
+            @Override
+            public int compare(Searchable o1, Searchable o2) {
+                int lengthComparison = Integer.compare(o2.getName().length(), o1.getName().length());
+                if (lengthComparison == 0) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+                return lengthComparison;
+            }
+        });
         for (Searchable item : searchables) {
             if (item.getSearchTerm().toLowerCase().contains(query.toLowerCase())) {
-                results.put(item.getName(), item);
+                results.add(item);
             }
         }
         return results;

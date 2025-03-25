@@ -5,7 +5,7 @@ import store.products.*;
 import store.search.*;
 import store.basket.ProductBasket;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class App {
     public static void main(String[] args) {
@@ -50,23 +50,23 @@ public class App {
             searchEngine.add(article3);
 
             System.out.println("\nПоиск по слову 'шоколад':");
-            Map<String, Searchable> searchResults = searchEngine.search("шоколад");
-            searchResults.values().forEach(System.out::println);
+            Set<Searchable> searchResults = searchEngine.search("шоколад");
+            searchResults.forEach(System.out::println);
 
             System.out.println("\nПоиск по слову 'книга':");
             searchResults = searchEngine.search("книга");
-            searchResults.values().forEach(System.out::println);
+            searchResults.forEach(System.out::println);
 
             try {
                 Searchable bestMatch = searchEngine.findBestMatch("молоко");
-                System.out.println("Лучший результат: " + bestMatch);
+                System.out.println("\nЛучший результат: " + bestMatch);
             } catch (BestResultNotFound e) {
                 System.out.println(e.getMessage());
             }
 
             try {
                 Searchable bestMatch = searchEngine.findBestMatch("шоколад");
-                System.out.println("Лучший результат: " + bestMatch);
+                System.out.println("\nЛучший результат: " + bestMatch);
             } catch (BestResultNotFound e) {
                 System.out.println(e.getMessage());
             }
