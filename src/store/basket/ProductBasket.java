@@ -2,26 +2,19 @@ package store.basket;
 
 import store.products.Product;
 
-public class ProductBasket {
-    private final Product[] products;
-    private int count = 0;
+import java.util.*;
 
-    public ProductBasket(int size) {
-        this.products = new Product[size];
-    }
+public class ProductBasket {
+    private final Map<String, List<Product>> products = new HashMap<>();
 
     public void addProduct(Product product) {
-        if (count < products.length) {
-            products[count++] = product;
-        } else {
-            System.out.println("Корзина переполнена! Нельзя добавить больше товаров.");
-        }
+        products.computeIfAbsent(product.getName().toLowerCase(), _ -> new ArrayList<>()).add(product);
     }
 
     public double getTotalPrice() {
         double total = 0;
-        for (Product product : products) {
-            if (product != null) {
+        for (List<Product> productList : products.values()) {
+            for (Product product : productList) {
                 total += product.getPrice();
             }
         }
@@ -30,17 +23,26 @@ public class ProductBasket {
 
     public int getSpecialProductCount() {
         int specialCount = 0;
-        for (Product product : products) {
-            if (product != null && product.isSpecial()) {
-                specialCount++;
+        for (List<Product> productList : products.values()) {
+            for (Product product : productList) {
+                if (product.isSpecial()) {
+                    specialCount++;
+                }
             }
         }
         return specialCount;
     }
 
+    public List<Product> removeProductByName(String name) {
+        String key = name.toLowerCase();
+        List<Product> removedProducts = products.remove(key);
+
+        return (removedProducts == null) ? Collections.emptyList() : removedProducts;
+    }
+
     public void printReceipt() {
-        for (Product product : products) {
-            if (product != null) {
+        for (List<Product> productList : products.values()) {
+            for (Product product : productList) {
                 System.out.println(product);
             }
         }
